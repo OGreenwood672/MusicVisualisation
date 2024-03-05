@@ -13,6 +13,8 @@ function setup() {
         new Platform(0, HEIGHT - size, WIDTH, size)
     );
     
+    frameRate(FRAMERATE);
+    
   
 }
 
@@ -20,11 +22,19 @@ function setup() {
 function draw() {
   
     background(BACKGROUND);
-    ball.draw();
+        
     platforms.forEach(platform => {
+        platform.updatePosition(deltaTime);
+        if (platform.x + platform.w < 0) {
+            platforms.shift(0);
+            platforms.push(platform.generateNext());
+        }
         platform.draw();
     });
-        
     
+    ball.draw();
+    
+    ball.updatePosition(deltaTime, platforms);
+        
 
 }
