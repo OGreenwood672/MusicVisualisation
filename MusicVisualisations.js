@@ -104,7 +104,7 @@ function updatePosition(dt, platforms) {
             
             let distances = [leftDifference, rightDifference, top_difference, bottom_difference].sort((a, b) => a - b)
             
-            console.log(platform.time, (millis() - startTime) / 1000);
+            console.log(platform.time, (millis() - startTime) / 1000, (millis() - startTime) / 1000 - platform.time);
 
             if (distances[0] == leftDifference) {
 

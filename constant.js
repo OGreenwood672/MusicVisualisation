@@ -1,8 +1,8 @@
 
 
 
-const WIDTH = 1000;
-const HEIGHT = 650;
+const WIDTH = 600;
+const HEIGHT = 450;
 
 const FRAMERATE = 60;
 
