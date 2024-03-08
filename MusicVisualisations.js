@@ -13,10 +13,10 @@ let data;
 
 function mousePressed() {
     if (isPlaying) {
-        song.pause();
+        // song.pause();
         pausedTime = millis();
     } else {
-        song.play();
+        // song.play();
         startTime += millis() - pausedTime;
     }
 
@@ -24,7 +24,7 @@ function mousePressed() {
 }
 
 function preload() {
-    song = loadSound(`mp3s/${SONG}`);
+    // song = loadSound(`mp3s/${SONG}`);
     data = loadJSON("songs.json");
 }
 
@@ -43,15 +43,15 @@ function setup() {
         0,
         0
     );
-    console.log(song_beats[song_beat_index]);
+    console.log("start x", song_beats[song_beat_index]);
 
     platforms.push(start_platform.generateNext(song_beats[song_beat_index]));
     song_beat_index++;
 
     while (
-        platforms.length < 5
+        platforms.length < 2
     ) {
-        console.log(song_beats[song_beat_index]);
+        console.log("yknow", song_beats[song_beat_index], "bob");
         platforms.push(platforms[platforms.length - 1].generateNext(song_beats[song_beat_index]));
         song_beat_index++;
     }
@@ -70,16 +70,17 @@ function draw() {
     platforms.forEach(platform => {
         platform.draw();
     });
+    start_platform.draw();
     
     ball.draw();
 
     if (isPlaying) {
 
-        ball.updatePosition(deltaTime, platforms);
+        ball.updatePosition(deltaTime / 1000, platforms);
 
         platforms.forEach(platform => {
 
-            platform.updatePosition(deltaTime);
+            platform.updatePosition(deltaTime / 1000);
 
         });
 

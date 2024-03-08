@@ -2,11 +2,14 @@
 import librosa
 import os
 import json
+import ffmpeg
 
 def getSongOnset(songNames):
     songs = dict()
     for songName in songNames:
-        y, sr = librosa.load(f"./mp3s/{songName}") #Can add offset
+        file = os.path.join(os.getcwd(), f"mp3s\\{songName}")
+        print(f"[LOADING] {songName} at {file}")
+        y, sr = librosa.load(file) #Can add offset
         songs[songName] = list(librosa.onset.onset_detect(y=y, sr=sr, units="time"))
     return songs
 

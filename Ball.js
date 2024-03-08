@@ -28,7 +28,6 @@ class Ball {
 
             if (this.isIntersecting(platform)) {
 
-
                 let height_top_difference = platform.y - (this.y + this.r);
                 let height_bottom_difference = this.y - this.r - platform.y + platform.h;
                 
