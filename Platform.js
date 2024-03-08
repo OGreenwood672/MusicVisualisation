@@ -25,17 +25,13 @@ class Platform {
     
     }
     
-    updatePosition(dt) {
-        
-        this.x -= this.dx * dt;
     
-    }
-     
+    // Assumes constant velocity forwards
     generateNext(next_time) {
         
         let dt = (next_time - this.time);
 
-        let next_x = this.dx * dt + this.x;
+        let next_x = this.dx * dt + this.x + (PLATFORMWIDTH / 2);
 
         let next_v = this.exit_velocity + GRAVITY * dt;
 
@@ -44,11 +40,13 @@ class Platform {
 
         let next_exit_velocity;
         if (next_v <= 0) {
-            next_exit_velocity = -1 * next_v;
+            next_exit_velocity = hitTop(next_v);
             next_h -= (PLATFORMHEIGHT + BALLRADIUS);
+            console.log("Top");
         } else {
-            next_exit_velocity = -1 * Math.log(1 + next_v);
+            next_exit_velocity = hitBottom(next_v)
             next_h += BALLRADIUS;
+            console.log("Bottom");
         }
 
         console.log("next x", next_x)
@@ -61,7 +59,7 @@ class Platform {
         console.log("old-exit-vel", this.exit_velocity);
         console.log("new-exit-vel", next_exit_velocity)
         
-        return new Platform(next_x, next_h, PLATFORMWIDTH, PLATFORMHEIGHT, next_exit_velocity, next_time);
+        return new Platform(next_x - PLATFORMWIDTH / 2, next_h, PLATFORMWIDTH, PLATFORMHEIGHT, next_exit_velocity, next_time);
 
     }
    

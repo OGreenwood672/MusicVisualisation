@@ -4,11 +4,11 @@
 const WIDTH = 1000;
 const HEIGHT = 650;
 
-const FRAMERATE = 30;
+const FRAMERATE = 60;
 
 // const SONG = "beat.mp3";
-const SONG = "made-up.mp3";
-// const SONG = "past_lives.mp3";
+// const SONG = "made-up.mp3";
+const SONG = "past_lives.mp3";
 // VISUALS
 
 const BALLRADIUS = 18;
@@ -21,12 +21,16 @@ const PLATFORMCOLOUR = [150, 10, 15, 255];
 
 
 // PLATFORMS
-const PLATFORMHEIGHT = 50;
-const PLATFORMWIDTH = 50;
+const PLATFORMHEIGHT = 100;
+const PLATFORMWIDTH = 100;
 
 // PHYSICS
 
-const GRAVITY = 9.81;
+const GRAVITY = 500;
 
 const VELOCITY = 300;
-const BALLBOUNCE = 0.99;
+// const BALLBOUNCE = 0.99;
+
+const hitBottom = v => -1 * Math.pow(v, 0.9);
+const hitTop = v => -1 * v;
+

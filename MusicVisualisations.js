@@ -13,10 +13,10 @@ let data;
 
 function mousePressed() {
     if (isPlaying) {
-        // song.pause();
+        song.pause();
         pausedTime = millis();
     } else {
-        // song.play();
+        song.play();
         startTime += millis() - pausedTime;
     }
 
@@ -24,7 +24,7 @@ function mousePressed() {
 }
 
 function preload() {
-    // song = loadSound(`mp3s/${SONG}`);
+    song = loadSound(`mp3s/${SONG}`);
     data = loadJSON("songs.json");
 }
 
@@ -44,12 +44,22 @@ function setup() {
         0
     );
     console.log("start x", song_beats[song_beat_index]);
+    // platforms.push(
+    //     new Platform(
+    //         0,
+    //         HEIGHT - 50,
+    //         WIDTH,
+    //         50,
+    //         0,
+    //         0
+    //     )
+    // );
 
     platforms.push(start_platform.generateNext(song_beats[song_beat_index]));
     song_beat_index++;
 
     while (
-        platforms.length < 2
+        platforms.length < 5
     ) {
         console.log("yknow", song_beats[song_beat_index], "bob");
         platforms.push(platforms[platforms.length - 1].generateNext(song_beats[song_beat_index]));
@@ -76,13 +86,7 @@ function draw() {
 
     if (isPlaying) {
 
-        ball.updatePosition(deltaTime / 1000, platforms);
-
-        platforms.forEach(platform => {
-
-            platform.updatePosition(deltaTime / 1000);
-
-        });
+        updatePosition(deltaTime / 1000, platforms);
 
         if (
             platforms[0].x < -1 * PLATFORMWIDTH
@@ -93,4 +97,49 @@ function draw() {
         }
     }
 
+}
+
+function updatePosition(dt, platforms) {
+    
+    ball.dy += ball.ay * dt;
+    
+    platforms.forEach(platform => {
+
+        platform.y -= ball.dy * dt;
+        platform.x -= ball.dx * dt;
+
+        if (ball.isIntersecting(platform)) {
+
+            let top_difference = Math.abs(ball.y + ball.r - platform.y);
+            let bottom_difference = Math.abs(platform.y + platform.h - ball.y + ball.r);
+
+            let leftDifference = Math.abs(ball.x + ball.r - platform.x);
+            let rightDifference = Math.abs(platform.x + platform.w - ball.x + ball.r);
+            
+            let distances = [leftDifference, rightDifference, top_difference, bottom_difference].sort((a, b) => a - b)
+
+            if (distances[0] == leftDifference) {
+
+                platforms.forEach(platform => platform.x += leftDifference);
+                ball.dx *= -1;
+
+            } else if (distances[0] == rightDifference) {
+                
+                platforms.forEach(platform => platform.x += rightDifference)
+                ball.dx *= -1;
+
+            } else if (ball.dy > 0) {
+
+                platforms.forEach(platform => platform.y += top_difference)
+                ball.dy = hitTop(ball.dy);
+
+            } else {
+
+                platforms.forEach(platform => platform.y -= bottom_difference)
+                ball.dy = hitBottom(ball.dy);
+
+            }
+        }
+
+    })
 }
