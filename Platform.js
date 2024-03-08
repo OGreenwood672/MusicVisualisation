@@ -13,6 +13,7 @@ class Platform {
         this.dx = VELOCITY;
         this.exit_velocity = exit_velocity;
         this.time = time;
+        this.landed = false;
         
     }
      
@@ -26,12 +27,12 @@ class Platform {
     
     
     // Assumes constant velocity forwards
-    generateNext(next_time, totalx, startTime) {
+    generateNext(next_time) {
         
         let dt = (next_time - this.time);
 
-        let next_x = this.dx * next_time - totalx + WIDTH / 2;
         // let next_x = this.dx * dt + this.x + PLATFORMWIDTH / 2;
+        let next_x = this.dx * next_time - totalx + WIDTH / 2;
 
         let next_v = this.exit_velocity + GRAVITY * dt;
 
@@ -39,9 +40,9 @@ class Platform {
         let next_h = old_y + this.exit_velocity * dt + 0.5 * GRAVITY * dt * dt;
 
         let next_exit_velocity;
-        if (next_v <= 0) {
+        if (next_v < 0) {
             next_exit_velocity = hitTop(next_v);
-            next_h -= (PLATFORMHEIGHT + BALLRADIUS);
+            next_h -= (PLATFORMHEIGHT + BALLRADIUS / 2);
         } else {
             next_exit_velocity = hitBottom(next_v)
             next_h += BALLRADIUS;

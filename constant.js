@@ -1,17 +1,20 @@
 
 
 
-const WIDTH = 600;
-const HEIGHT = 450;
+const WIDTH = 900;
+const HEIGHT = 600;
 
-const FRAMERATE = 60;
+const FRAMERATE = 100;
 
-const SONG = "beat.mp3";
+// const SONG = "beat.mp3";
 // const SONG = "made-up.mp3";
 // const SONG = "past_lives.mp3";
+const SONG = "dont let me down.mp3";
+// const SONG = "Under my Skin.mp3";
+
 // VISUALS
 
-const BALLRADIUS = 18;
+const BALLRADIUS = 15;
 
 //Colour Schemes
 
@@ -21,12 +24,12 @@ const PLATFORMCOLOUR = [150, 10, 15, 255];
 
 
 // PLATFORMS
-const PLATFORMHEIGHT = 100;
-const PLATFORMWIDTH = 100;
+const PLATFORMHEIGHT = 40;
+const PLATFORMWIDTH = 15;
 
 // PHYSICS
 
-const GRAVITY = 500;
+const GRAVITY = 900;
 
 const VELOCITY = 300;
 

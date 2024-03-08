@@ -2,7 +2,6 @@
 let isPlaying = false;
 let startTime;
 let pausedTime = 0;
-let lastUpdate = 0;
 
 let ball;
 let platforms = [];
@@ -21,7 +20,6 @@ function mousePressed() {
     } else {
         song.play();
         startTime += millis() - pausedTime;
-        lastUpdate = millis();
     }
 
     isPlaying = !isPlaying;
@@ -50,7 +48,7 @@ function setup() {
         0
     );
 
-    platforms.push(start_platform.generateNext(song_beats[song_beat_index], 0, startTime));
+    platforms.push(start_platform.generateNext(song_beats[song_beat_index], 0));
     song_beat_index++;
     
     frameRate(FRAMERATE);
@@ -70,15 +68,20 @@ function draw() {
 
     if (isPlaying) {
 
-        updatePosition((millis() - lastUpdate) / 1000, platforms);
+        updatePosition(deltaTime / 1000, platforms);
 
-        while (
-            platforms[platforms.length - 1].x < WIDTH
+        if (
+            platforms[platforms.length - 1].x < WIDTH / 2 - PLATFORMWIDTH
         ) {
-            platforms.push(platforms[platforms.length - 1].generateNext(song_beats[song_beat_index], totalx, startTime));
+            platforms.push(platforms[platforms.length - 1].generateNext(song_beats[song_beat_index], totalx));
             song_beat_index++;
         }
-        lastUpdate = millis();
+        if (
+            platforms.length > 0 &&
+            platforms[0].x < -1 * PLATFORMWIDTH
+        ) {
+            platforms.shift(0);
+        }
 
     }
 
@@ -92,9 +95,10 @@ function updatePosition(dt, platforms) {
     platforms.forEach(platform => {
 
         platform.y -= ball.dy * dt;
-        platform.x -= ball.dx * dt;
+        platform.x -= ball.dx * dt; 
 
         if (ball.isIntersecting(platform)) {
+            // console.log("time:", platform.time, "actual:", (millis() - startTime) / 1000)
 
             let top_difference = Math.abs(ball.y + ball.r - platform.y);
             let bottom_difference = Math.abs(platform.y + platform.h - ball.y + ball.r);
@@ -104,7 +108,7 @@ function updatePosition(dt, platforms) {
             
             let distances = [leftDifference, rightDifference, top_difference, bottom_difference].sort((a, b) => a - b)
             
-            console.log(platform.time, (millis() - startTime) / 1000, (millis() - startTime) / 1000 - platform.time);
+            // console.log(platform.time, (millis() - startTime) / 1000, (millis() - startTime) / 1000 - platform.time);
 
             if (distances[0] == leftDifference) {
 
@@ -116,20 +120,28 @@ function updatePosition(dt, platforms) {
                 platforms.forEach(p => p.x += rightDifference)
                 ball.dx *= -1;
 
-            } else if (ball.dy > 0) {
+            } else 
+            if (ball.dy >= 0) {
 
                 platforms.forEach(p => {
                     p.y += top_difference;
-                    // p.x += ball.x - (platform.x + platform.w / 2)
+                    // if (!platform.landed) { p.x += ball.x - (platform.x + platform.w / 2); }
                 });
                 ball.dy = platform.exit_velocity;
 
-            } else {
 
-                platforms.forEach(p => p.y -= bottom_difference);
+            } else {
+                // Hits block while still going up, but will go down onto block after 
+                if (platform.exit_velocity < 0) { return; } 
+
+                platforms.forEach(p => {
+                    p.y -= bottom_difference;
+                    // if (!platform.landed) { p.x += ball.x - (platform.x + platform.w / 2); }
+                });
                 ball.dy = platform.exit_velocity;
 
             }
+            platform.landed = true;
         }
 
     })
