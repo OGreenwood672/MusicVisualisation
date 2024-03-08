@@ -18,6 +18,7 @@ class Platform {
      
         
     draw() {
+
         fill(this.colour);
         rect(this.x, this.y, this.w, this.h);
     
@@ -25,11 +26,12 @@ class Platform {
     
     
     // Assumes constant velocity forwards
-    generateNext(next_time) {
+    generateNext(next_time, totalx, startTime) {
         
         let dt = (next_time - this.time);
 
-        let next_x = this.dx * dt + this.x + (PLATFORMWIDTH / 2);
+        let next_x = this.dx * next_time - totalx + WIDTH / 2;
+        // let next_x = this.dx * dt + this.x + PLATFORMWIDTH / 2;
 
         let next_v = this.exit_velocity + GRAVITY * dt;
 

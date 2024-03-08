@@ -2,6 +2,7 @@
 let isPlaying = false;
 let startTime;
 let pausedTime = 0;
+let lastUpdate = 0;
 
 let ball;
 let platforms = [];
@@ -11,6 +12,8 @@ let song_beats;
 let song_beat_index = 0;
 let data;
 
+let totalx = 0;
+
 function mousePressed() {
     if (isPlaying) {
         song.pause();
@@ -18,6 +21,7 @@ function mousePressed() {
     } else {
         song.play();
         startTime += millis() - pausedTime;
+        lastUpdate = millis();
     }
 
     isPlaying = !isPlaying;
@@ -33,6 +37,8 @@ function setup() {
     song_beats = data[SONG];
 
     createCanvas(WIDTH, HEIGHT);
+    startTime = millis();
+
     ball = new Ball();
     
     start_platform = new Platform(
@@ -43,32 +49,11 @@ function setup() {
         0,
         0
     );
-    console.log("start x", song_beats[song_beat_index]);
-    // platforms.push(
-    //     new Platform(
-    //         0,
-    //         HEIGHT - 50,
-    //         WIDTH,
-    //         50,
-    //         0,
-    //         0
-    //     )
-    // );
 
-    platforms.push(start_platform.generateNext(song_beats[song_beat_index]));
+    platforms.push(start_platform.generateNext(song_beats[song_beat_index], 0, startTime));
     song_beat_index++;
-
-    while (
-        platforms.length < 1
-    ) {
-        console.log("yknow", song_beats[song_beat_index], "bob");
-        platforms.push(platforms[platforms.length - 1].generateNext(song_beats[song_beat_index]));
-        song_beat_index++;
-    }
     
     frameRate(FRAMERATE);
-
-    startTime = millis();
   
 }
 
@@ -85,15 +70,16 @@ function draw() {
 
     if (isPlaying) {
 
-        updatePosition(deltaTime / 1000, platforms);
+        updatePosition((millis() - lastUpdate) / 1000, platforms);
 
-        if (
-            platforms[0].x < WIDTH / 2 - PLATFORMWIDTH
+        while (
+            platforms[platforms.length - 1].x < WIDTH
         ) {
-            platforms.push(platforms[platforms.length - 1].generateNext(song_beats[song_beat_index]));
+            platforms.push(platforms[platforms.length - 1].generateNext(song_beats[song_beat_index], totalx, startTime));
             song_beat_index++;
-            platforms.shift(0);
         }
+        lastUpdate = millis();
+
     }
 
 }
@@ -101,6 +87,7 @@ function draw() {
 function updatePosition(dt, platforms) {
     
     ball.dy += ball.ay * dt;
+    totalx += ball.dx * dt;
     
     platforms.forEach(platform => {
 
@@ -116,7 +103,8 @@ function updatePosition(dt, platforms) {
             let rightDifference = Math.abs(platform.x + platform.w - ball.x + ball.r);
             
             let distances = [leftDifference, rightDifference, top_difference, bottom_difference].sort((a, b) => a - b)
-            console.log("actual-old", ball.dy)
+            
+            console.log(platform.time, (millis() - startTime) / 1000);
 
             if (distances[0] == leftDifference) {
 
@@ -131,22 +119,17 @@ function updatePosition(dt, platforms) {
             } else if (ball.dy > 0) {
 
                 platforms.forEach(p => {
-                    p.y += top_difference
-                    p.x += ball.x - (platform.x + platform.w / 2)
+                    p.y += top_difference;
+                    // p.x += ball.x - (platform.x + platform.w / 2)
                 });
-                ball.dy = hitBottom(ball.dy);
+                ball.dy = platform.exit_velocity;
 
             } else {
 
                 platforms.forEach(p => p.y -= bottom_difference);
-                platforms.forEach(p => {
-                    p.y -= bottom_difference
-                    p.x -= ball.x - (platform.x + platform.w / 2)
-                });
-                ball.dy = hitTop(ball.dy);
+                ball.dy = platform.exit_velocity;
 
             }
-            console.log("actual-new", ball.dy)
         }
 
     })
