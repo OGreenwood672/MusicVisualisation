@@ -59,7 +59,7 @@ function setup() {
     song_beat_index++;
 
     while (
-        platforms.length < 5
+        platforms.length < 1
     ) {
         console.log("yknow", song_beats[song_beat_index], "bob");
         platforms.push(platforms[platforms.length - 1].generateNext(song_beats[song_beat_index]));
@@ -80,7 +80,6 @@ function draw() {
     platforms.forEach(platform => {
         platform.draw();
     });
-    start_platform.draw();
     
     ball.draw();
 
@@ -89,11 +88,11 @@ function draw() {
         updatePosition(deltaTime / 1000, platforms);
 
         if (
-            platforms[0].x < -1 * PLATFORMWIDTH
+            platforms[0].x < WIDTH / 2 - PLATFORMWIDTH
         ) {
-            platforms.shift(0)
             platforms.push(platforms[platforms.length - 1].generateNext(song_beats[song_beat_index]));
             song_beat_index++;
+            platforms.shift(0);
         }
     }
 
@@ -117,28 +116,37 @@ function updatePosition(dt, platforms) {
             let rightDifference = Math.abs(platform.x + platform.w - ball.x + ball.r);
             
             let distances = [leftDifference, rightDifference, top_difference, bottom_difference].sort((a, b) => a - b)
+            console.log("actual-old", ball.dy)
 
             if (distances[0] == leftDifference) {
 
-                platforms.forEach(platform => platform.x += leftDifference);
+                platforms.forEach(p => p.x += leftDifference);
                 ball.dx *= -1;
 
             } else if (distances[0] == rightDifference) {
                 
-                platforms.forEach(platform => platform.x += rightDifference)
+                platforms.forEach(p => p.x += rightDifference)
                 ball.dx *= -1;
 
             } else if (ball.dy > 0) {
 
-                platforms.forEach(platform => platform.y += top_difference)
-                ball.dy = hitTop(ball.dy);
+                platforms.forEach(p => {
+                    p.y += top_difference
+                    p.x += ball.x - (platform.x + platform.w / 2)
+                });
+                ball.dy = hitBottom(ball.dy);
 
             } else {
 
-                platforms.forEach(platform => platform.y -= bottom_difference)
-                ball.dy = hitBottom(ball.dy);
+                platforms.forEach(p => p.y -= bottom_difference);
+                platforms.forEach(p => {
+                    p.y -= bottom_difference
+                    p.x -= ball.x - (platform.x + platform.w / 2)
+                });
+                ball.dy = hitTop(ball.dy);
 
             }
+            console.log("actual-new", ball.dy)
         }
 
     })

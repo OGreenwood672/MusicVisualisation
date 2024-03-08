@@ -6,9 +6,9 @@ const HEIGHT = 650;
 
 const FRAMERATE = 60;
 
-// const SONG = "beat.mp3";
+const SONG = "beat.mp3";
 // const SONG = "made-up.mp3";
-const SONG = "past_lives.mp3";
+// const SONG = "past_lives.mp3";
 // VISUALS
 
 const BALLRADIUS = 18;
@@ -29,7 +29,6 @@ const PLATFORMWIDTH = 100;
 const GRAVITY = 500;
 
 const VELOCITY = 300;
-// const BALLBOUNCE = 0.99;
 
 const hitBottom = v => -1 * Math.pow(v, 0.9);
 const hitTop = v => -1 * v;
