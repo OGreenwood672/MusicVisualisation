@@ -42,7 +42,8 @@ class Platform {
         let next_exit_velocity;
         if (next_v < 0) {
             next_exit_velocity = hitTop(next_v);
-            next_h -= (PLATFORMHEIGHT + BALLRADIUS / 2);
+            next_h -= (PLATFORMHEIGHT + BALLRADIUS);
+            console.log(next_exit_velocity)
         } else {
             next_exit_velocity = hitBottom(next_v)
             next_h += BALLRADIUS;

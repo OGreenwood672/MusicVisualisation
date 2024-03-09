@@ -110,22 +110,22 @@ function updatePosition(dt, platforms) {
             
             // console.log(platform.time, (millis() - startTime) / 1000, (millis() - startTime) / 1000 - platform.time);
 
-            if (distances[0] == leftDifference) {
+            // if (distances[0] == leftDifference) {
 
-                platforms.forEach(p => p.x += leftDifference);
-                ball.dx *= -1;
+            //     platforms.forEach(p => p.x += leftDifference);
+            //     ball.dx *= -1;
 
-            } else if (distances[0] == rightDifference) {
+            // } else if (distances[0] == rightDifference) {
                 
-                platforms.forEach(p => p.x += rightDifference)
-                ball.dx *= -1;
+            //     platforms.forEach(p => p.x += rightDifference)
+            //     ball.dx *= -1;
 
-            } else 
+            // } else 
             if (ball.dy >= 0) {
 
                 platforms.forEach(p => {
                     p.y += top_difference;
-                    // if (!platform.landed) { p.x += ball.x - (platform.x + platform.w / 2); }
+                    if (!platform.landed) { p.x += ball.x - (platform.x + platform.w / 2); }
                 });
                 ball.dy = platform.exit_velocity;
 
@@ -136,7 +136,7 @@ function updatePosition(dt, platforms) {
 
                 platforms.forEach(p => {
                     p.y -= bottom_difference;
-                    // if (!platform.landed) { p.x += ball.x - (platform.x + platform.w / 2); }
+                    if (!platform.landed) { p.x += ball.x - (platform.x + platform.w / 2); }
                 });
                 ball.dy = platform.exit_velocity;
 
