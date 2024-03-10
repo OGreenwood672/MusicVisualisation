@@ -38,15 +38,13 @@ class Platform {
         let next_h = old_y + this.exit_velocity * dt + 0.5 * GRAVITY * dt * dt;
 
         let next_exit_velocity;
-        let next_w;
+        let next_w = PLATFORMWIDTH;
         if (next_v < 0) {
             next_exit_velocity = hitTop(next_v);
             next_h = next_h - PLATFORMHEIGHT - BALLRADIUS * 0.45;
-            next_w = PLATFORMWIDTH;//2 * (next_x - this.x);
         } else {
             next_exit_velocity = hitBottom(next_v)
             next_h += BALLRADIUS;
-            next_w = PLATFORMWIDTH;
         }
         
         return new Platform(next_x - next_w / 2, next_h, next_w, PLATFORMHEIGHT, next_exit_velocity, next_time);

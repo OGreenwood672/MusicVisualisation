@@ -46,8 +46,6 @@ class Ball {
 
     }
     
-    
-    
     draw() {
         
         ellipseMode(CENTER);
