@@ -81,11 +81,21 @@ function draw() {
             }
             platforms.push(platform)
         }
+
         if (
             platforms.length > 0 &&
             platforms[0].x < -1 * PLATFORMWIDTH
         ) {
             platforms.shift(0);
+        }
+
+        ball.past_lives.push([
+            ball.x,
+            ball.y,
+            ball.past_lives.length > 0 ? (ball.past_lives[ball.past_lives.length - 1][2] + 1) % TRAILLENGTH : 0]
+        );
+        while (ball.past_lives.length > TRAILLENGTH) {
+            ball.past_lives.shift(0);
         }
 
     }
@@ -96,6 +106,11 @@ function updatePosition(dt, platforms) {
     
     ball.dy += ball.ay * dt;
     totalx += ball.dx * dt;
+
+    ball.past_lives.forEach(b => {
+        b[0] -= ball.dx * dt;
+        b[1] -= ball.dy * dt;
+    });
     
     platforms.forEach(platform => {
 
@@ -103,18 +118,15 @@ function updatePosition(dt, platforms) {
         platform.x -= ball.dx * dt; 
 
         if (ball.isIntersecting(platform)) {
-            // console.log("time:", platform.time, "actual:", (millis() - startTime) / 1000)
 
             let top_difference = Math.abs(ball.y + ball.r - platform.y);
             let bottom_difference = Math.abs(platform.y + platform.h - ball.y + ball.r);
 
-            let leftDifference = Math.abs(ball.x + ball.r - platform.x);
-            let rightDifference = Math.abs(platform.x + platform.w - ball.x + ball.r);
+            // let leftDifference = Math.abs(ball.x + ball.r - platform.x);
+            // let rightDifference = Math.abs(platform.x + platform.w - ball.x + ball.r);
             
-            let distances = [leftDifference, rightDifference, top_difference, bottom_difference].sort((a, b) => a - b)
+            // let distances = [leftDifference, rightDifference, top_difference, bottom_difference].sort((a, b) => a - b)
             
-            // console.log(platform.time, (millis() - startTime) / 1000, (millis() - startTime) / 1000 - platform.time);
-
             // if (distances[0] == leftDifference) {
 
             //     platforms.forEach(p => p.x += leftDifference);
@@ -130,7 +142,6 @@ function updatePosition(dt, platforms) {
 
                 platforms.forEach(p => {
                     p.y += top_difference;
-                    // if (!platform.landed) { p.x += ball.x - (platform.x + platform.w / 2); }
                 });
                 ball.dy = platform.exit_velocity;
 
@@ -140,13 +151,10 @@ function updatePosition(dt, platforms) {
 
                 platforms.forEach(p => {
                     p.y -= bottom_difference;
-                    // if (!platform.landed) { p.x += ball.x - (platform.x + platform.w / 2); }
                 });
-                // console.log("true speed", -1 * ball.dy)
                 ball.dy = platform.exit_velocity;
 
             }
-            platform.landed = true;
         }
 
     })

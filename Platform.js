@@ -13,7 +13,6 @@ class Platform {
         this.dx = VELOCITY;
         this.exit_velocity = exit_velocity;
         this.time = time;
-        this.landed = false;
         
     }
      
@@ -31,7 +30,6 @@ class Platform {
         
         let dt = (next_time - this.time);
 
-        // let next_x = this.dx * dt + this.x + PLATFORMWIDTH / 2;
         let next_x = this.dx * next_time - totalx + WIDTH / 2;
 
         let next_v = this.exit_velocity + GRAVITY * dt;
@@ -40,25 +38,18 @@ class Platform {
         let next_h = old_y + this.exit_velocity * dt + 0.5 * GRAVITY * dt * dt;
 
         let next_exit_velocity;
+        let next_w;
         if (next_v < 0) {
             next_exit_velocity = hitTop(next_v);
             next_h = next_h - PLATFORMHEIGHT - BALLRADIUS * 0.45;
+            next_w = PLATFORMWIDTH;//2 * (next_x - this.x);
         } else {
             next_exit_velocity = hitBottom(next_v)
             next_h += BALLRADIUS;
+            next_w = PLATFORMWIDTH;
         }
-
-        // console.log("next x", next_x)
-        // console.log("old_y", old_y)
-        // console.log("dt", dt)
-        // console.log("gravity compoonent", 0.5 * GRAVITY * dt * dt)
-        // console.log("velocity component", this.exit_velocity * dt)
-        // console.log("next h", next_h)
-        // console.log("next_v", next_v)
-        // console.log("old-exit-vel", this.exit_velocity);
-        // console.log("new-exit-vel", next_exit_velocity)
         
-        return new Platform(next_x - PLATFORMWIDTH / 2, next_h, PLATFORMWIDTH, PLATFORMHEIGHT, next_exit_velocity, next_time);
+        return new Platform(next_x - next_w / 2, next_h, next_w, PLATFORMHEIGHT, next_exit_velocity, next_time);
 
     }
    
