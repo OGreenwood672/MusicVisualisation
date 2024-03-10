@@ -15,6 +15,8 @@ class Ball {
         this.ay = GRAVITY;
 
         this.dx = VELOCITY;
+
+        this.past_lives = [];
  
     }
     
@@ -24,6 +26,8 @@ class Ball {
         // Calculate the distance between the circle's center and the rectangle's center
         let distX = Math.abs(this.x - (platform.x + platform.w / 2));
         let distY = Math.abs(this.y - (platform.y + platform.h / 2));
+
+        // return distX < (platform.w / 2 + this.r) && distY < (platform.h / 2 + this.r);
             
         // If the distance between centers is greater than the sum of their radii, they don't overlap
         if (distX < (platform.w / 2 + this.r) && distY < (platform.h / 2 + this.r)) {

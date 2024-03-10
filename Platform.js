@@ -36,14 +36,13 @@ class Platform {
 
         let next_v = this.exit_velocity + GRAVITY * dt;
 
-        let old_y = this.exit_velocity >= 0 ? this.y + PLATFORMHEIGHT + BALLRADIUS: this.y - BALLRADIUS;
+        let old_y = this.exit_velocity >= 0 ? (this.y + PLATFORMHEIGHT + BALLRADIUS) : (this.y - BALLRADIUS);
         let next_h = old_y + this.exit_velocity * dt + 0.5 * GRAVITY * dt * dt;
 
         let next_exit_velocity;
         if (next_v < 0) {
             next_exit_velocity = hitTop(next_v);
-            next_h -= (PLATFORMHEIGHT + BALLRADIUS);
-            console.log(next_exit_velocity)
+            next_h = next_h - PLATFORMHEIGHT - BALLRADIUS * 0.45;
         } else {
             next_exit_velocity = hitBottom(next_v)
             next_h += BALLRADIUS;

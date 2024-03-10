@@ -9,9 +9,9 @@ const FRAMERATE = 100;
 // const SONG = "beat.mp3";
 // const SONG = "made-up.mp3";
 // const SONG = "past_lives.mp3";
-// const SONG = "dont let me down.mp3";
+const SONG = "dont let me down.mp3";
 // const SONG = "Under my Skin.mp3";
-const SONG = "Jungle Book.mp3";
+// const SONG = "Jungle Book.mp3";
 
 // VISUALS
 
@@ -26,7 +26,7 @@ const PLATFORMCOLOUR = [150, 10, 15, 255];
 
 // PLATFORMS
 const PLATFORMHEIGHT = 50;
-const PLATFORMWIDTH = 35;
+const PLATFORMWIDTH = 10;
 
 // PHYSICS
 

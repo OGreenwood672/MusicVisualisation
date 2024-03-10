@@ -73,8 +73,13 @@ function draw() {
         if (
             platforms[platforms.length - 1].x < WIDTH / 2 - PLATFORMWIDTH
         ) {
-            platforms.push(platforms[platforms.length - 1].generateNext(song_beats[song_beat_index], totalx));
+            platform = platforms[platforms.length - 1].generateNext(song_beats[song_beat_index], totalx);
             song_beat_index++;
+            while (Math.abs(platform.exit_velocity) < 0.1) {
+                platform = platforms[platforms.length - 1].generateNext(song_beats[song_beat_index], totalx);
+                song_beat_index++;
+            }
+            platforms.push(platform)
         }
         if (
             platforms.length > 0 &&
@@ -125,19 +130,19 @@ function updatePosition(dt, platforms) {
 
                 platforms.forEach(p => {
                     p.y += top_difference;
-                    if (!platform.landed) { p.x += ball.x - (platform.x + platform.w / 2); }
+                    // if (!platform.landed) { p.x += ball.x - (platform.x + platform.w / 2); }
                 });
                 ball.dy = platform.exit_velocity;
 
-
             } else {
                 // Hits block while still going up, but will go down onto block after 
-                if (platform.exit_velocity < 0) { return; } 
+                if (platform.exit_velocity < 0) { return; }
 
                 platforms.forEach(p => {
                     p.y -= bottom_difference;
-                    if (!platform.landed) { p.x += ball.x - (platform.x + platform.w / 2); }
+                    // if (!platform.landed) { p.x += ball.x - (platform.x + platform.w / 2); }
                 });
+                // console.log("true speed", -1 * ball.dy)
                 ball.dy = platform.exit_velocity;
 
             }
