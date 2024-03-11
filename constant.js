@@ -6,16 +6,17 @@ const HEIGHT = 900;
 
 const FRAMERATE = 100;
 
-// const SONG = "beat.mp3";
-// const SONG = "past_lives.mp3";
-// const SONG = "dont let me down.mp3";
-// const SONG = "Under my Skin.mp3";
-// const SONG = "Jungle Book.mp3";
-const SONG = "wii.mp3";
+// const SONG = "beat";
+// const SONG = "past_lives";
+// const SONG = "dont let me down";
+// const SONG = "Under my Skin";
+// const SONG = "Jungle Book";
+const SONG = "wii";
+// const SONG = "winter";
 
 // VISUALS
 
-const BALLRADIUS = 15;
+const BALLRADIUS = 12;
 const TRAILLENGTH = 28;
 
 //Colour Schemes
@@ -59,7 +60,7 @@ const TRAILCOLOURS = [
 
 // PLATFORMS
 const PLATFORMHEIGHT = 800;
-const PLATFORMWIDTH = 2;
+const PLATFORMWIDTH = 4;
 
 // PHYSICS
 

@@ -13,26 +13,62 @@ let data;
 
 let totalx = 0;
 
+let chunks = [];
+let recorder;
+
 function mousePressed() {
     if (isPlaying) {
         song.pause();
         pausedTime = millis();
+        recorder.stop();
     } else {
         song.play();
         startTime += millis() - pausedTime;
+        record();
     }
 
     isPlaying = !isPlaying;
 }
 
+function record() {
+    chunks.length = 0;
+    let stream = document.querySelector('canvas').captureStream(60);
+    recorder = new MediaRecorder(stream);
+
+    recorder.ondataavailable = e => {
+        if (e.data.size) {
+            chunks.push(e.data);
+        }
+    };
+
+    recorder.onstop = exportVideo;
+    recorder.start();
+}
+
+function exportVideo(e) {
+    const blob = new Blob(chunks, {type: "mp4"});
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = `${SONG}.mp4`;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    }, 100);
+}
+  
+
 function preload() {
-    song = loadSound(`mp3s/${SONG}`);
+    song = loadSound(`mp3s/${SONG}.mp3`);
     data = loadJSON("songs.json");
 }
 
 function setup() {
 
-    song_beats = data[SONG];
+    song_beats = data[`${SONG}.mp3`];
 
     createCanvas(WIDTH, HEIGHT);
     startTime = millis();
@@ -96,6 +132,10 @@ function draw() {
         );
         while (ball.past_lives.length > TRAILLENGTH) {
             ball.past_lives.shift(0);
+        }
+
+        if (song_beat_index >= song_beats.length) {
+            recorder.stop();
         }
 
     }

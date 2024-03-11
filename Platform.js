@@ -20,7 +20,7 @@ class Platform {
     draw() {
 
         fill(this.colour);
-        rect(this.x, this.y, this.w, this.h);
+        rect(this.x - BALLRADIUS * 0.3, this.y, this.w, this.h);
     
     }
     

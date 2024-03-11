@@ -2,7 +2,6 @@
 import librosa
 import os
 import json
-import ffmpeg
 
 def getSongOnset(songNames):
     songs = dict()
