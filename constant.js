@@ -1,6 +1,8 @@
 
 
 
+// const WIDTH = 450;
+// const HEIGHT = 750;
 const WIDTH = 1500;
 const HEIGHT = 900;
 

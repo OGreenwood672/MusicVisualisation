@@ -52,11 +52,14 @@ class Ball {
 
         this.past_lives.forEach(b => {
             fill(TRAILCOLOURS[b[2]]);
-            ellipse(b[0], b[1], 2 * this.r, 2 * this.r);
+            circle(b[0], b[1], 2 * this.r);
         })
 
         fill(this.colour);
-        ellipse(this.x, this.y, 2 * this.r, 2 * this.r);
+        circle(this.x, this.y, 2 * this.r);
+        // nofill();
+        // fill(255);
+        // circle(this.x, this.y, 2 * this.r, 2 * this.r);
         
     }
   

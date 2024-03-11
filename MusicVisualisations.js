@@ -33,7 +33,9 @@ function mousePressed() {
 function record() {
     chunks.length = 0;
     let stream = document.querySelector('canvas').captureStream(60);
-    recorder = new MediaRecorder(stream);
+    recorder = new MediaRecorder(stream, {
+        mimeType: "video/webm; codecs=vp9"
+    });
 
     recorder.ondataavailable = e => {
         if (e.data.size) {
@@ -46,12 +48,12 @@ function record() {
 }
 
 function exportVideo(e) {
-    const blob = new Blob(chunks, {type: "mp4"});
+    const blob = new Blob(chunks, {type: "video/webm"});
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.style.display = 'none';
     a.href = url;
-    a.download = `${SONG}.mp4`;
+    a.download = `${SONG}.webm`;
     document.body.appendChild(a);
     a.click();
     setTimeout(() => {
