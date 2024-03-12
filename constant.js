@@ -1,25 +1,17 @@
 
 
 
-// const WIDTH = 450;
-// const HEIGHT = 750;
-const WIDTH = 1500;
-const HEIGHT = 900;
+const WIDTH = 3000;
+const HEIGHT = 1750;
 
 const FRAMERATE = 100;
 
-// const SONG = "beat";
-// const SONG = "past_lives";
-// const SONG = "dont let me down";
-// const SONG = "Under my Skin";
-// const SONG = "Jungle Book";
-const SONG = "wii";
-// const SONG = "winter";
+const SONG = "barradeen-bedtime-after-a-coffee";
 
 // VISUALS
 
-const BALLRADIUS = 12;
-const TRAILLENGTH = 28;
+const BALLRADIUS = 22;
+const TRAILLENGTH = 30;
 
 //Colour Schemes
 
@@ -61,14 +53,14 @@ const TRAILCOLOURS = [
 ]
 
 // PLATFORMS
-const PLATFORMHEIGHT = 800;
-const PLATFORMWIDTH = 4;
+const PLATFORMHEIGHT = 1500;
+const PLATFORMWIDTH = 6;
 
 // PHYSICS
 
-const GRAVITY = 900;
+const GRAVITY = 1200;
 
-const VELOCITY = 300;
+const VELOCITY = 400;
 
 const hitBottom = v => -1 * Math.pow(v, 0.9);
 const hitTop = v => -1 * v;

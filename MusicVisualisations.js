@@ -109,7 +109,7 @@ function draw() {
         updatePosition(deltaTime / 1000, platforms);
 
         if (
-            platforms[platforms.length - 1].x < WIDTH / 2 - PLATFORMWIDTH
+            platforms[platforms.length - 1].x < WIDTH /// 2 - PLATFORMWIDTH
         ) {
             platform = platforms[platforms.length - 1].generateNext(song_beats[song_beat_index], totalx);
             song_beat_index++;
@@ -136,7 +136,7 @@ function draw() {
             ball.past_lives.shift(0);
         }
 
-        if (song_beat_index >= song_beats.length) {
+        if ((millis() - startTime) / 1000 > song_beats[song_beats.length - 1] + 5) {
             recorder.stop();
         }
 
